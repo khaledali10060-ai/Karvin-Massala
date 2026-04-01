@@ -44,23 +44,23 @@ const GoldFrame = ({ children, className = "", noBg = false }: { children: React
   </div>
 );
 
-const FireEffect = ({ isMobile = false }: { isMobile?: boolean }) => (
+const FireEffect = () => (
   <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-20">
     <motion.div 
       animate={{ 
-        scale: isMobile ? [1, 1.05, 1] : [1, 1.1, 1],
-        opacity: isMobile ? [0.2, 0.3, 0.2] : [0.2, 0.4, 0.2],
-        y: isMobile ? [0, -10, 0] : [0, -20, 0]
+        scale: [1, 1.1, 1],
+        opacity: [0.2, 0.4, 0.2],
+        y: [0, -20, 0]
       }}
-      transition={{ duration: isMobile ? 8 : 6, repeat: Infinity, ease: "easeInOut" }}
+      transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       className="absolute -bottom-40 left-0 right-0 h-96 bg-[radial-gradient(ellipse_at_bottom,_rgba(255,80,0,0.3)_0%,_transparent_70%)] blur-[100px]"
     />
   </div>
 );
 
-const SpiceParticles = ({ isMobile = false }: { isMobile?: boolean }) => (
+const SpiceParticles = () => (
   <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-    {[...Array(isMobile ? 8 : 20)].map((_, i) => (
+    {[...Array(20)].map((_, i) => (
       <motion.div
         key={i}
         initial={{ 
@@ -70,7 +70,7 @@ const SpiceParticles = ({ isMobile = false }: { isMobile?: boolean }) => (
           scale: Math.random() * 0.5 + 0.5
         }}
         animate={{ 
-          y: [null, isMobile ? "-=80" : "-=150"],
+          y: [null, "-=150"],
           opacity: [0, 0.3, 0],
           x: [null, i % 2 === 0 ? "+=30" : "-=30"]
         }}
@@ -85,65 +85,60 @@ const SpiceParticles = ({ isMobile = false }: { isMobile?: boolean }) => (
   </div>
 );
 
-const SmokeEffect = ({ isMobile = false }: { isMobile?: boolean }) => {
-  if (isMobile) return null;
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-30">
-      {[...Array(5)].map((_, i) => (
-        <motion.div
-          key={i}
-          initial={{ 
-            x: (i * 25) + "%", 
-            y: "110%",
-            opacity: 0,
-            scale: 1,
-            rotate: 0
-          }}
-          animate={{ 
-            y: "-20%",
-            opacity: [0, 0.4, 0],
-            scale: [1, 2, 3],
-            rotate: [0, 45, 90],
-            x: [(i * 25) + "%", (i * 25 + (i % 2 === 0 ? 10 : -10)) + "%"]
-          }}
-          transition={{ 
-            duration: 20 + Math.random() * 10, 
-            repeat: Infinity, 
-            delay: i * 4,
-            ease: "linear"
-          }}
-          className="absolute w-64 h-64 bg-white/5 rounded-full blur-[80px]"
-        />
-      ))}
-    </div>
-  );
-};
+const SmokeEffect = () => (
+  <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-30">
+    {[...Array(5)].map((_, i) => (
+      <motion.div
+        key={i}
+        initial={{ 
+          x: (i * 25) + "%", 
+          y: "110%",
+          opacity: 0,
+          scale: 1,
+          rotate: 0
+        }}
+        animate={{ 
+          y: "-20%",
+          opacity: [0, 0.4, 0],
+          scale: [1, 2, 3],
+          rotate: [0, 45, 90],
+          x: [(i * 25) + "%", (i * 25 + (i % 2 === 0 ? 10 : -10)) + "%"]
+        }}
+        transition={{ 
+          duration: 20 + Math.random() * 10, 
+          repeat: Infinity, 
+          delay: i * 4,
+          ease: "linear"
+        }}
+        className="absolute w-64 h-64 bg-white/5 rounded-full blur-[80px]"
+      />
+    ))}
+  </div>
+);
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showOrdering, setShowOrdering] = useState(false);
   const [showReservation, setShowReservation] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   
   const { scrollYProgress } = useScroll();
   const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
   const backgroundYFast = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
+    
+    // Lazy load the background video after page mount to improve initial LCP
+    const timer = setTimeout(() => setIsVideoLoaded(true), 1500);
+    
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', checkMobile);
+      clearTimeout(timer);
     };
   }, []);
 
@@ -170,9 +165,7 @@ export default function App() {
       <div className="pointer-events-none fixed inset-0 z-[85] shadow-[inset_0_0_200px_rgba(0,0,0,0.95)]"></div>
 
       {/* Global Grain Overlay */}
-      {!isMobile && (
-        <div className="pointer-events-none fixed inset-0 z-[100] opacity-[0.04] mix-blend-overlay" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}></div>
-      )}
+      <div className="pointer-events-none fixed inset-0 z-[100] opacity-[0.04] mix-blend-overlay" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}></div>
 
       {/* Global Mandala Background */}
       <div className="pointer-events-none fixed inset-0 z-[90] opacity-[0.05] mix-blend-overlay" style={{ backgroundImage: `url('https://www.transparenttextures.com/patterns/arabesque.png')` }}></div>
@@ -186,7 +179,6 @@ export default function App() {
               alt="Karvin Massala Logo" 
               className="h-12 md:h-16 w-auto object-contain"
               referrerPolicy="no-referrer"
-              loading="lazy"
             />
             <div className="text-2xl md:text-3xl font-serif text-gold hidden sm:block">
               Karvin Massala
@@ -274,15 +266,18 @@ export default function App() {
               alt="Background Placeholder" 
               className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-luminosity"
               referrerPolicy="no-referrer"
-              loading="lazy"
             />
-            <iframe
-              src="https://player.vimeo.com/video/1179398009?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1&playsinline=1"
-              className="absolute top-1/2 left-1/2 w-[177.77vh] h-[100vh] min-w-[100vw] min-h-[56.25vw] -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-40 mix-blend-luminosity"
-              frameBorder="0"
-              allow="autoplay; fullscreen"
-              allowFullScreen
-            ></iframe>
+            {isVideoLoaded && (
+              <iframe
+                src="https://player.vimeo.com/video/1179398009?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1&playsinline=1&dnt=1"
+                className="absolute top-1/2 left-1/2 w-[177.77vh] h-[100vh] min-w-[100vw] min-h-[56.25vw] -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-40 mix-blend-luminosity"
+                frameBorder="0"
+                allow="autoplay; fullscreen"
+                allowFullScreen
+                title="Background Video"
+                loading="lazy"
+              ></iframe>
+            )}
             {/* Cinematic Gradients */}
             <div className="absolute inset-0 bg-gradient-to-b from-ink/80 via-ink/30 to-ink"></div>
             <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-transparent to-ink/90"></div>
@@ -351,7 +346,7 @@ export default function App() {
       <section id="story-fire" className="py-24 md:py-32 relative overflow-hidden">
         <div className="absolute inset-0 z-0">
           <motion.div style={{ y: backgroundYFast }} className="w-full h-[150%] -top-[25%] relative">
-            <img src="https://images.unsplash.com/photo-1544148103-0773bf10d330?q=80&w=2000&auto=format&fit=crop" className="w-full h-full object-cover opacity-10 mix-blend-luminosity" alt="Tandoor Fire" referrerPolicy="no-referrer" loading="lazy" />
+            <img src="https://images.unsplash.com/photo-1544148103-0773bf10d330?q=80&w=2000&auto=format&fit=crop" className="w-full h-full object-cover opacity-10 mix-blend-luminosity" alt="Tandoor Fire" referrerPolicy="no-referrer" />
             <div className="absolute inset-0 bg-gradient-to-b from-ink via-transparent to-ink"></div>
             <div className="absolute inset-0 bg-spotlight mix-blend-overlay opacity-50"></div>
           </motion.div>
@@ -711,7 +706,7 @@ export default function App() {
               viewport={{ once: true }}
             >
               <GoldFrame className="h-[400px] md:h-[600px] overflow-hidden border-0">
-                <img src="https://i.postimg.cc/BZ18vkWm/603910843-1158338549792380-6615533859420913573-n-(1).jpg" alt="Restaurant Interior" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" loading="lazy" />
+                <img src="https://i.postimg.cc/BZ18vkWm/603910843-1158338549792380-6615533859420913573-n-(1).jpg" alt="Restaurant Interior" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" />
               </GoldFrame>
             </motion.div>
             <div className="grid grid-rows-2 gap-4 h-[400px] md:h-[600px]">
@@ -722,7 +717,7 @@ export default function App() {
                 viewport={{ once: true }}
               >
                 <GoldFrame className="h-full overflow-hidden border-0">
-                  <img src="https://i.postimg.cc/sX5Rkp80/603909347-1158315169794718-5630284246935016690-n.jpg" alt="Warm Lighting" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" loading="lazy" />
+                  <img src="https://i.postimg.cc/sX5Rkp80/603909347-1158315169794718-5630284246935016690-n.jpg" alt="Warm Lighting" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" />
                 </GoldFrame>
               </motion.div>
               <motion.div 
@@ -732,7 +727,7 @@ export default function App() {
                 viewport={{ once: true }}
               >
                 <GoldFrame className="h-full overflow-hidden border-0">
-                  <img src="https://i.postimg.cc/g25FrSbM/622824301-1185877940371774-3730018937596831752-n.jpg" alt="Luxury Details" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" loading="lazy" />
+                  <img src="https://i.postimg.cc/g25FrSbM/622824301-1185877940371774-3730018937596831752-n.jpg" alt="Luxury Details" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" />
                 </GoldFrame>
               </motion.div>
             </div>
@@ -782,7 +777,7 @@ export default function App() {
               className="group relative aspect-square overflow-hidden"
             >
               <GoldFrame className="w-full h-full border-0 hover:border-gold/60 transition-colors duration-500">
-                <img src="https://i.postimg.cc/g25FrSbM/622824301-1185877940371774-3730018937596831752-n.jpg" alt="Indian Dish" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" loading="lazy" />
+                <img src="https://i.postimg.cc/g25FrSbM/622824301-1185877940371774-3730018937596831752-n.jpg" alt="Indian Dish" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center pb-8">
                   <span className="text-gold font-serif text-lg tracking-wider">اكتشف المزيد</span>
                 </div>
@@ -813,7 +808,7 @@ export default function App() {
               className="group relative aspect-square overflow-hidden"
             >
               <GoldFrame className="w-full h-full border-0 hover:border-gold/60 transition-colors duration-500">
-                <img src="https://i.postimg.cc/sX5Rkp80/603909347-1158315169794718-5630284246935016690-n.jpg" alt="Cooking Fire" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" loading="lazy" />
+                <img src="https://i.postimg.cc/sX5Rkp80/603909347-1158315169794718-5630284246935016690-n.jpg" alt="Cooking Fire" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
                 <div className="absolute inset-0 bg-ink/40 group-hover:bg-transparent transition-colors duration-500"></div>
               </GoldFrame>
             </motion.a>

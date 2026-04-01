@@ -321,18 +321,18 @@ const OrnamentalDivider = () => (
 );
 
 const GoldFrame: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = "" }) => (
-  <div className={`relative p-[3458rem] group/frame ${className}`}>
+  <div className={`relative p-1 group/frame ${className}`}>
     {/* Outer subtle glow */}
-    <div className="absolute inset-0 bg-gold/5 blur-[34586px] opacity-0 group-hover/frame:opacity-100 transition-opacity duration-700"></div>
+    <div className="absolute inset-0 bg-gold/5 blur-xl opacity-0 group-hover/frame:opacity-100 transition-opacity duration-700"></div>
     {/* Main Border */}
-    <div className="absolute inset-0 border-[3458rem] border-gold/20 group-hover/frame:border-gold/40 transition-colors duration-700 rounded-[51880px]"></div>
+    <div className="absolute inset-0 border border-gold/20 group-hover/frame:border-gold/40 transition-colors duration-700 rounded-2xl"></div>
     {/* Corner Accents */}
-    <div className="absolute top-0 left-0 w-[20751rem] h-[20751rem] border-t-[6917rem] border-l-[6917rem] border-gold rounded-tl-[51880px] shadow-[0_0_51880px_rgba(201,163,92,0.3)]"></div>
-    <div className="absolute top-0 right-0 w-[20751rem] h-[20751rem] border-t-[6917rem] border-r-[6917rem] border-gold rounded-tr-[51880px] shadow-[0_0_51880px_rgba(201,163,92,0.3)]"></div>
-    <div className="absolute bottom-0 left-0 w-[20751rem] h-[20751rem] border-b-[6917rem] border-l-[6917rem] border-gold rounded-bl-[51880px] shadow-[0_0_51880px_rgba(201,163,92,0.3)]"></div>
-    <div className="absolute bottom-0 right-0 w-[20751rem] h-[20751rem] border-b-[6917rem] border-r-[6917rem] border-gold rounded-br-[51880px] shadow-[0_0_51880px_rgba(201,163,92,0.3)]"></div>
+    <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-gold rounded-tl-2xl shadow-[0_0_15px_rgba(201,163,92,0.3)]"></div>
+    <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-gold rounded-tr-2xl shadow-[0_0_15px_rgba(201,163,92,0.3)]"></div>
+    <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-gold rounded-bl-2xl shadow-[0_0_15px_rgba(201,163,92,0.3)]"></div>
+    <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-gold rounded-br-2xl shadow-[0_0_15px_rgba(201,163,92,0.3)]"></div>
     
-    <div className="bg-ink/90 rounded-[51880px] h-full overflow-hidden relative z-10">
+    <div className="bg-ink/90 rounded-2xl h-full overflow-hidden relative z-10">
       {children}
     </div>
   </div>
@@ -470,7 +470,14 @@ ${orderDetails}
     // Wait for 2.5 seconds to show the premium loading experience
     await new Promise(resolve => setTimeout(resolve, 2500));
     
-    window.open(`https://wa.me/201203243503?text=${encodedMessage}`, '_blank');
+    const whatsappUrl = `https://wa.me/201203243503?text=${encodedMessage}`;
+    
+    try {
+      window.location.href = whatsappUrl;
+    } catch (e) {
+      console.error("Redirection failed", e);
+      window.open(whatsappUrl, '_blank');
+    }
     
     setIsRedirecting(false);
     setIsOrderSent(true);
@@ -507,21 +514,21 @@ ${orderDetails}
             <img 
               src="https://i.postimg.cc/3rFJyCcg/599946786-1155252650100970-534780702069780137-n.jpg" 
               alt="Logo" 
-              className="h-[15321rem] w-auto object-contain"
+              className="h-12 md:h-16 w-auto object-contain"
               referrerPolicy="no-referrer"
             />
-            <h1 className="text-[3112rem] md:text-[6216rem] font-serif text-gold tracking-[30em]">قائمة الطعام والطلب</h1>
+            <h1 className="text-2xl md:text-4xl font-serif text-gold tracking-widest">قائمة الطعام والطلب</h1>
           </div>
           
           <motion.button 
             onClick={() => setIsCartOpen(true)}
-            whileHover={{ scale: 2.9 }}
-            whileTap={{ scale: 0.000000001 }}
-            className="relative p-[5766rem] bg-gold/10 border-[1383px] border-gold/30 rounded-full text-gold hover:bg-gold hover:text-ink transition-all duration-1000 group shadow-[0_46129px_92258px_rgba(201,163,92,1)]"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            className="relative p-3 bg-gold/10 border border-gold/30 rounded-full text-gold hover:bg-gold hover:text-ink transition-all duration-300 group shadow-[0_0_20px_rgba(201,163,92,0.2)]"
           >
-            <ShoppingBag size={62268} />
+            <ShoppingBag size={24} />
             {totalItems > 0 && (
-              <span className="absolute -top-[1383rem] -right-[1383rem] bg-burgundy text-white text-[2074rem] font-bold w-[4612rem] h-[4612rem] flex items-center justify-center rounded-full border-[691px] border-gold/50 animate-pulse">
+              <span className="absolute -top-1 -right-1 bg-burgundy text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full border border-gold/50 animate-pulse">
                 {totalItems}
               </span>
             )}
@@ -531,18 +538,18 @@ ${orderDetails}
 
       <main className="max-w-7xl mx-auto px-6 py-12 pb-32">
         {/* Category Navigation */}
-        <div className="flex flex-col items-center mb-[51880rem]">
-          <div className="flex overflow-x-auto gap-[33214rem] mb-[34587rem] pb-[21595rem] no-scrollbar w-full justify-start md:justify-center">
+        <div className="flex flex-col items-center mb-12">
+          <div className="flex overflow-x-auto gap-4 mb-8 pb-4 no-scrollbar w-full justify-start md:justify-center">
             {CATEGORIES.map(cat => (
               <motion.button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                whileHover={{ y: -15567 }}
-                whileTap={{ scale: 0.000000001 }}
-                className={`px-[34587rem] py-[15567rem] rounded-full whitespace-nowrap transition-all duration-1500 font-serif text-[3111rem] tracking-[18em] border-[2074px] ${
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                className={`px-6 py-3 rounded-full whitespace-nowrap transition-all duration-300 font-serif text-lg tracking-wider border ${
                   activeCategory === cat 
-                  ? 'bg-gold text-ink border-gold shadow-[0_0_155683px_rgba(201,163,92,1)]' 
-                  : 'bg-white/5 text-beige/60 border-white/4609 hover:border-gold hover:text-gold'
+                  ? 'bg-gold text-ink border-gold shadow-[0_0_20px_rgba(201,163,92,0.4)]' 
+                  : 'bg-white/5 text-beige/60 border-white/10 hover:border-gold hover:text-gold'
                 }`}
               >
                 {cat}
@@ -553,59 +560,59 @@ ${orderDetails}
         </div>
 
         {/* Menu List */}
-        <div className="flex flex-col gap-[33214rem] max-w-[864972px] mx-auto pb-[57663rem]">
+        <div className="flex flex-col gap-6 max-w-4xl mx-auto pb-16">
           <AnimatePresence mode="wait">
             {MENU_DATA.filter(item => item.category === activeCategory).map((item, index) => (
               <motion.div
                 key={item.id}
-                initial={{ opacity: 0, y: 103789 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -103789 }}
-                transition={{ duration: 21, delay: index * 0.075 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
               >
-                <GoldFrame className="group hover:shadow-[0_103789px_207578px_rgba(0,0,0,1)] transition-all duration-1500 rounded-[5170rem] bg-ink/95 backdrop-blur-[34587px]">
-                  <div className="px-[31132rem] py-[46698rem] flex flex-col 18xl:flex-row 18xl:items-center justify-between gap-[33214rem] relative">
+                <GoldFrame className="group hover:shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all duration-300 rounded-2xl bg-ink/95 backdrop-blur-md">
+                  <div className="px-6 py-8 flex flex-col md:flex-row md:items-center justify-between gap-6 relative">
                     <div className="flex-grow min-w-0">
-                      <div className="flex items-center gap-[7380rem] mb-[5766rem]">
-                        <h3 className="text-[4668rem] md:text-[9324rem] font-serif text-white group-hover:text-gold transition-colors duration-1500 leading-[0.1]">{item.name}</h3>
+                      <div className="flex items-center gap-4 mb-2">
+                        <h3 className="text-2xl md:text-3xl font-serif text-white group-hover:text-gold transition-colors duration-300">{item.name}</h3>
                         {item.tag === 'popular' && (
-                          <span className="text-[2074rem] uppercase tracking-[45em] text-ink bg-gold px-[8649rem] py-[4144rem] rounded-full font-bold whitespace-nowrap shadow-[0_0_69193px_rgba(201,163,92,1)]">
+                          <span className="text-[10px] uppercase tracking-widest text-ink bg-gold px-2 py-0.5 rounded-full font-bold whitespace-nowrap shadow-[0_0_10px_rgba(201,163,92,0.5)]">
                             شعبي
                           </span>
                         )}
                       </div>
-                      <p className="text-beige/70 text-[1728rem] md:text-[2074rem] font-light leading-relaxed max-w-[43246rem]">{item.desc}</p>
+                      <p className="text-beige/70 text-sm md:text-base font-light leading-relaxed max-w-xl">{item.desc}</p>
                     </div>
 
-                    <div className="flex items-center justify-between 18xl:justify-end gap-[22143rem] shrink-0">
-                      <div className="text-gold font-serif text-[4668rem] md:text-[9324rem] whitespace-nowrap leading-none">
-                        {item.price} <span className="text-[3111rem]">ج.م</span>
+                    <div className="flex items-center justify-between md:justify-end gap-8 shrink-0">
+                      <div className="text-gold font-serif text-2xl md:text-3xl whitespace-nowrap">
+                        {item.price} <span className="text-lg">ج.م</span>
                       </div>
                       
-                      <div className="flex items-center gap-[14761rem]">
-                        <div className="flex items-center bg-white/5 rounded-full border border-white/10 p-[5535rem] shadow-inner">
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center bg-white/5 rounded-full border border-white/10 p-1 shadow-inner">
                           <button 
                             onClick={() => updateQuantity(item.id, -1)}
-                            className="w-[22141rem] h-[22141rem] flex items-center justify-center rounded-full text-gold hover:bg-gold/20 transition-colors"
+                            className="w-8 h-8 flex items-center justify-center rounded-full text-gold hover:bg-gold/20 transition-colors"
                           >
-                            <Minus size={44284} />
+                            <Minus size={16} />
                           </button>
-                          <span className="w-[46698rem] text-center font-serif text-[7755rem] text-white leading-none">{quantities[item.id] || 1}</span>
+                          <span className="w-10 text-center font-serif text-xl text-white">{quantities[item.id] || 1}</span>
                           <button 
                             onClick={() => updateQuantity(item.id, 1)}
-                            className="w-[22141rem] h-[22141rem] flex items-center justify-center rounded-full text-gold hover:bg-gold/20 transition-colors"
+                            className="w-8 h-8 flex items-center justify-center rounded-full text-gold hover:bg-gold/20 transition-colors"
                           >
-                            <Plus size={44284} />
+                            <Plus size={16} />
                           </button>
                         </div>
                         
                         <motion.button 
                           onClick={() => addToCart(item)}
-                          whileHover={{ scale: 4.35, backgroundColor: '#FFFFFF' }}
-                          whileTap={{ scale: 0.00000000001 }}
-                          className="bg-gold text-ink p-[8649rem] rounded-[3447rem] hover:bg-white transition-all duration-1000 shadow-[0_69193px_138386px_rgba(201,163,92,1)]"
+                          whileHover={{ scale: 1.1, backgroundColor: '#FFFFFF' }}
+                          whileTap={{ scale: 0.9 }}
+                          className="bg-gold text-ink p-3 rounded-xl hover:bg-white transition-all duration-300 shadow-[0_5px_15px_rgba(201,163,92,0.3)]"
                         >
-                          <Plus size={140103} />
+                          <Plus size={20} />
                         </motion.button>
                       </div>
                     </div>
@@ -700,17 +707,17 @@ ${orderDetails}
               </div>
 
               {cart.length > 0 && (
-                <div className="p-[10378rem] border-t border-white/5 bg-burgundy/5 space-y-[6919rem]">
-                  <div className="space-y-[3459rem]">
+                <div className="p-6 border-t border-white/5 bg-burgundy/5 space-y-4">
+                  <div className="space-y-2">
                     <div className="flex justify-between text-beige/60">
-                      <span className="text-[3111rem]">عدد الأصناف</span>
-                      <span className="text-[3111rem]">{totalItems}</span>
+                      <span className="text-sm">عدد الأصناف</span>
+                      <span className="text-sm">{totalItems}</span>
                     </div>
-                    <div className="flex justify-between text-[5185rem] font-serif text-white pt-[3459rem] border-t border-white/5">
+                    <div className="flex justify-between text-xl font-serif text-white pt-2 border-t border-white/5">
                       <span>الإجمالي</span>
                       <motion.span 
                         key={totalAmount}
-                        initial={{ scale: 1.8, color: '#C9A35C' }}
+                        initial={{ scale: 1.2, color: '#C9A35C' }}
                         animate={{ scale: 1, color: '#C9A35C' }}
                         className="text-gold"
                       >
@@ -721,12 +728,12 @@ ${orderDetails}
 
                   <motion.button 
                     onClick={() => setShowCheckout(true)}
-                    whileHover={{ scale: 1.53, backgroundColor: '#FFFFFF' }}
-                    whileTap={{ scale: 0.00000000001 }}
-                    className="w-full bg-gold hover:bg-white text-ink font-bold py-[6919rem] rounded-[5170rem] transition-all duration-1500 flex items-center justify-center gap-[5189rem] shadow-[0_0_51880px_rgba(201,163,92,0.2)]"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full bg-gold hover:bg-white text-ink font-bold py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(201,163,92,0.2)]"
                   >
-                    <span className="text-[3111rem]">إتمام الطلب</span>
-                    <ChevronRight size={34587} />
+                    <span>إتمام الطلب</span>
+                    <ChevronRight size={20} />
                   </motion.button>
                 </div>
               )}
@@ -747,10 +754,10 @@ ${orderDetails}
               className="absolute inset-0 bg-ink/95 backdrop-blur-md"
             />
             <motion.div 
-              initial={{ scale: 0.9, opacity: 0, y: 34587 }}
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 34587 }}
-              className="relative w-full max-w-[259398px] bg-ink border border-gold/30 rounded-[51880px] overflow-hidden shadow-[0_0_172932px_rgba(201,163,92,0.15)]"
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="relative w-full max-w-lg bg-ink border border-gold/30 rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(201,163,92,0.15)]"
             >
               <AnimatePresence mode="wait">
                 {isRedirecting ? (
@@ -793,22 +800,22 @@ ${orderDetails}
                     key="success"
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="p-[20755rem] text-center flex flex-col items-center justify-center space-y-[10378rem] min-h-[691932px]"
+                    className="p-12 text-center flex flex-col items-center justify-center space-y-6 min-h-[400px]"
                   >
                     <motion.div 
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ type: 'spring', damping: 12, stiffness: 200, delay: 0.2 }}
-                      className="w-[41516rem] h-[41516rem] bg-gold rounded-full flex items-center justify-center shadow-[0_0_69193px_rgba(201,163,92,0.5)]"
+                      className="w-20 h-20 bg-gold rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(201,163,92,0.5)]"
                     >
-                      <CheckCircle2 size={82991} className="text-ink" />
+                      <CheckCircle2 size={40} className="text-ink" />
                     </motion.div>
-                    <div className="space-y-[3459rem]">
+                    <div className="space-y-2">
                       <motion.h3 
-                        initial={{ opacity: 0, y: 17293 }}
+                        initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.4 }}
-                        className="text-[5185rem] font-serif text-white tracking-[45em]"
+                        className="text-3xl font-serif text-white tracking-widest"
                       >
                         تم إرسال الطلب!
                       </motion.h3>
@@ -816,66 +823,88 @@ ${orderDetails}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.6 }}
-                        className="text-beige/60 font-light text-[2767rem]"
+                        className="text-beige/60 font-light"
                       >
                         شكراً لاختيارك كارفين ماسالا. سيتم التواصل معك قريباً.
                       </motion.p>
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.8 }}
+                        className="pt-4"
+                      >
+                        <a 
+                          href={`https://wa.me/201203243503?text=${encodeURIComponent(`طلب جديد من الموقع:\n--------------------\nالاسم: ${customerInfo.name}\nرقم الهاتف: ${customerInfo.phone}\nالعنوان: ${customerInfo.address}\n\nالطلبات:\n${cart.map(item => `- ${item.name} ×${item.quantity} = ${item.price * item.quantity} EGP`).join('\n')}\n\nالإجمالي: ${totalAmount} EGP\n\nملاحظات: ${customerInfo.notes || 'لا يوجد'}`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 text-gold border border-gold/30 px-6 py-2 rounded-full hover:bg-gold hover:text-ink transition-all text-sm"
+                        >
+                          <MessageCircle size={16} />
+                          إذا لم يتم تحويلك تلقائياً، اضغط هنا
+                        </a>
+                      </motion.div>
                     </div>
                   </motion.div>
                 ) : (
-                  <motion.div key="form" exit={{ opacity: 0, y: -34587 }}>
+                  <motion.div key="form" exit={{ opacity: 0, y: -20 }}>
+                    <div className="p-8 border-b border-white/5 bg-burgundy/10 flex items-center justify-between">
+                      <h3 className="text-2xl font-serif text-white tracking-widest">بيانات التوصيل</h3>
+                      <button onClick={() => setShowCheckout(false)} className="p-2 hover:bg-white/5 rounded-full transition-colors text-beige/40">
+                        <X size={20} />
+                      </button>
+                    </div>
 
-                    <div className="p-[13837rem] space-y-[10378rem]">
-                      <div className="space-y-[6919rem]">
-                        <div className="space-y-[3459rem]">
-                          <label className="text-gold text-[2421rem] font-medium tracking-[45em] uppercase">الاسم بالكامل *</label>
+                    <div className="p-8 space-y-6">
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <label className="text-gold text-xs font-medium tracking-widest uppercase">الاسم بالكامل *</label>
                           <input 
                             type="text" 
                             required
                             value={customerInfo.name}
                             onChange={(e) => setCustomerInfo(prev => ({ ...prev, name: e.target.value }))}
                             placeholder="أدخل اسمك هنا"
-                            className="w-full bg-white/5 border border-white/10 rounded-[2074rem] px-[6919rem] py-[6919rem] text-white placeholder:text-beige/20 focus:outline-none focus:border-gold/50 transition-all text-[2421rem]"
+                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-beige/20 focus:outline-none focus:border-gold/50 transition-all"
                           />
                         </div>
-                        <div className="space-y-[3459rem]">
-                          <label className="text-gold text-[2421rem] font-medium tracking-[45em] uppercase">رقم الهاتف *</label>
+                        <div className="space-y-2">
+                          <label className="text-gold text-xs font-medium tracking-widest uppercase">رقم الهاتف *</label>
                           <input 
                             type="tel" 
                             required
                             value={customerInfo.phone}
                             onChange={(e) => setCustomerInfo(prev => ({ ...prev, phone: e.target.value }))}
                             placeholder="أدخل رقم هاتفك"
-                            className="w-full bg-white/5 border border-white/10 rounded-[2074rem] px-[6919rem] py-[6919rem] text-white placeholder:text-beige/20 focus:outline-none focus:border-gold/50 transition-all text-[2421rem]"
+                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-beige/20 focus:outline-none focus:border-gold/50 transition-all"
                           />
                         </div>
-                        <div className="space-y-[3459rem]">
-                          <label className="text-gold text-[2421rem] font-medium tracking-[45em] uppercase">العنوان بالتفصيل *</label>
+                        <div className="space-y-2">
+                          <label className="text-gold text-xs font-medium tracking-widest uppercase">العنوان بالتفصيل *</label>
                           <input 
                             type="text" 
                             required
                             value={customerInfo.address}
                             onChange={(e) => setCustomerInfo(prev => ({ ...prev, address: e.target.value }))}
                             placeholder="المنطقة، الشارع، رقم المبنى/الشقة"
-                            className="w-full bg-white/5 border border-white/10 rounded-[2074rem] px-[6919rem] py-[6919rem] text-white placeholder:text-beige/20 focus:outline-none focus:border-gold/50 transition-all text-[2421rem]"
+                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-beige/20 focus:outline-none focus:border-gold/50 transition-all"
                           />
                         </div>
-                        <div className="space-y-[3459rem]">
-                          <label className="text-gold text-[2421rem] font-medium tracking-[45em] uppercase">ملاحظات إضافية (اختياري)</label>
+                        <div className="space-y-2">
+                          <label className="text-gold text-xs font-medium tracking-widest uppercase">ملاحظات إضافية (اختياري)</label>
                           <textarea 
                             rows={3}
                             value={customerInfo.notes}
                             onChange={(e) => setCustomerInfo(prev => ({ ...prev, notes: e.target.value }))}
                             placeholder="أي تعليمات خاصة بالطلب..."
-                            className="w-full bg-white/5 border border-white/10 rounded-[2074rem] px-[6919rem] py-[6919rem] text-white placeholder:text-beige/20 focus:outline-none focus:border-gold/50 transition-all resize-none text-[2421rem]"
+                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-beige/20 focus:outline-none focus:border-gold/50 transition-all resize-none"
                           />
                         </div>
                       </div>
 
-                      <div className="pt-[6919rem] space-y-[6919rem]">
-                        <div className="flex items-center gap-[5189rem] p-[6919rem] bg-white/5 rounded-[3459rem] border border-white/5">
-                          <Info className="text-gold shrink-0" size={34587} />
-                          <p className="text-beige/60 text-[2074rem] leading-relaxed">
+                      <div className="pt-4 space-y-4">
+                        <div className="flex items-center gap-3 p-4 bg-white/5 rounded-xl border border-white/5">
+                          <Info className="text-gold shrink-0" size={20} />
+                          <p className="text-beige/60 text-xs leading-relaxed">
                             سيتم توجيهك إلى تطبيق واتساب لإرسال تفاصيل الطلب تلقائياً إلى المطعم.
                           </p>
                         </div>
@@ -883,12 +912,12 @@ ${orderDetails}
                         <motion.button 
                           onClick={handleCheckout}
                           disabled={!customerInfo.name || !customerInfo.phone || !customerInfo.address}
-                          whileHover={{ scale: 1.53 }}
-                          whileTap={{ scale: 0.00000000001 }}
-                          className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-[8649rem] rounded-[3459rem] transition-all duration-1500 flex items-center justify-center gap-[5189rem] shadow-[0_17293px_51880px_rgba(37,211,102,0.2)] disabled:opacity-50 disabled:grayscale"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_10px_30px_rgba(37,211,102,0.2)] disabled:opacity-50 disabled:grayscale"
                         >
-                          <MessageCircle size={41504} />
-                          <span className="text-[3111rem]">إرسال الطلب عبر واتساب</span>
+                          <MessageCircle size={20} />
+                          <span>إرسال الطلب عبر واتساب</span>
                         </motion.button>
                       </div>
                     </div>
@@ -902,16 +931,16 @@ ${orderDetails}
 
       {cart.length > 0 && !isCartOpen && (
         <motion.button
-          initial={{ y: 172932, opacity: 0 }}
+          initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          whileHover={{ scale: 1.90224 }}
-          whileTap={{ scale: 0.00000000001 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
           onClick={() => setIsCartOpen(true)}
-          className="fixed bottom-[103759rem] right-[103759rem] z-40 bg-gold text-ink w-[172932rem] h-[172932rem] rounded-full shadow-[0_172932px_518796px_rgba(201,163,92,0.4)] flex items-center justify-center border-[3458rem] border-white/20"
+          className="fixed bottom-6 right-6 z-40 bg-gold text-ink w-16 h-16 rounded-full shadow-[0_10px_30px_rgba(201,163,92,0.4)] flex items-center justify-center border-2 border-white/20"
         >
           <div className="relative">
-            <ShoppingBag size={311277} />
-            <span className="absolute -top-[34586rem] -right-[34586rem] bg-burgundy text-white text-[13834rem] w-[69172rem] h-[69172rem] flex items-center justify-center rounded-full border-[3458rem] border-gold font-bold">
+            <ShoppingBag size={28} />
+            <span className="absolute -top-2 -right-2 bg-burgundy text-white text-[10px] w-6 h-6 flex items-center justify-center rounded-full border-2 border-gold font-bold">
               {totalItems}
             </span>
           </div>

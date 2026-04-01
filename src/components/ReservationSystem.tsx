@@ -67,12 +67,19 @@ const ReservationSystem: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       
       setTimeout(() => {
         setIsSuccess(true);
-        window.open(whatsappUrl, '_blank');
+        // Using window.location.href is more reliable than window.open in some environments
+        // and less likely to be blocked by popup blockers when called after a delay.
+        try {
+          window.location.href = whatsappUrl;
+        } catch (e) {
+          console.error("Redirection failed", e);
+          window.open(whatsappUrl, '_blank');
+        }
         
         // Auto close after delay
         setTimeout(() => {
           onClose();
-        }, 3000);
+        }, 5000);
       }, 2500);
     }, 1000);
   };
@@ -177,6 +184,22 @@ const ReservationSystem: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 >
                   شكراً لاختيارك كارفين ماسالا. سيتم التواصل معك قريباً لتأكيد الحجز.
                 </motion.p>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8 }}
+                  className="pt-4"
+                >
+                  <a 
+                    href={`https://wa.me/201203243503?text=${encodeURIComponent(`حجز جديد:\n--------------------\nالاسم: ${formData.name}\nرقم الهاتف: ${formData.phone}\n\nالتاريخ: ${formData.date}\nالوقت: ${formData.time}\nعدد الأفراد: ${formData.guests}\n\nملاحظات: ${formData.notes || 'لا يوجد'}`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-gold border border-gold/30 px-6 py-2 rounded-full hover:bg-gold hover:text-ink transition-all text-sm"
+                  >
+                    <MessageCircle size={16} />
+                    إذا لم يتم تحويلك تلقائياً، اضغط هنا
+                  </a>
+                </motion.div>
               </div>
             </motion.div>
           ) : (

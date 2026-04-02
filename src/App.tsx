@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
-import { MessageCircle, ChevronLeft, Menu, X, MapPin, Phone, Clock, ShoppingBag, Calendar } from 'lucide-react';
+import { MessageCircle, ChevronLeft, Menu, X, MapPin, Phone, Clock, ShoppingBag, Calendar, Instagram } from 'lucide-react';
 import OrderingSystem from './components/OrderingSystem';
 import ReservationSystem from './components/ReservationSystem';
 
@@ -1023,6 +1023,45 @@ export default function App() {
           >
             تأكيد الحجز
           </motion.button>
+        </div>
+      </section>
+
+      {/* Instagram Feed Section */}
+      <section className="bg-[#4A0404] py-24 relative overflow-hidden">
+        {/* Pattern Overlay */}
+        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l15 15-15 15-15-15zM0 30l15 15-15 15-15-15zM60 30l15 15-15 15-15-15zM30 60l15 15-15 15-15-15z' fill='%23C7A000' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")`, backgroundSize: '60px 60px' }}></div>
+        
+        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-4xl font-serif text-[#C7A000] text-center mb-8"
+          >
+            JOIN OUR 10K+ FOLLOWERS
+          </motion.h2>
+          <div className="mb-12">
+            <OrnamentalDivider />
+          </div>
+          
+          <div 
+            id="instagram-feed-container"
+            className="w-full border-double border-4 border-[#C7A000] p-4 min-h-[300px] flex items-center justify-center text-[#C7A000] font-serif text-xl"
+          >
+            [LIVE INSTAGRAM FEED LOADING...]
+          </div>
+          
+          <div className="text-center mt-16">
+            <a 
+              href="https://www.instagram.com/karvinmassala/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-[#C7A000] text-[#4A0404] hover:bg-[#4A0404] hover:text-[#C7A000] border border-[#C7A000] px-8 py-4 rounded-full text-lg font-medium transition-all duration-300"
+            >
+              <Instagram size={20} />
+              FOLLOW @KARVINMASSALA ON INSTAGRAM
+            </a>
+          </div>
         </div>
       </section>
 

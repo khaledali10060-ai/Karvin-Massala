@@ -475,16 +475,18 @@ ${orderDetails}
 
     const encodedMessage = encodeURIComponent(message);
     
-    // Wait for 2.5 seconds to show the premium loading experience
-    await new Promise(resolve => setTimeout(resolve, 2500));
-    
     const whatsappUrl = `https://wa.me/201203243503?text=${encodedMessage}`;
     
     try {
-      window.location.href = whatsappUrl;
+      // Use window.open for better compatibility and to keep the app state
+      const newWindow = window.open(whatsappUrl, '_blank');
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+        // Fallback if popup is blocked
+        window.location.href = whatsappUrl;
+      }
     } catch (e) {
       console.error("Redirection failed", e);
-      window.open(whatsappUrl, '_blank');
+      window.location.href = whatsappUrl;
     }
     
     setIsRedirecting(false);

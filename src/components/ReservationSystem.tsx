@@ -60,28 +60,25 @@ const ReservationSystem: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/201203243503?text=${encodedMessage}`;
 
-    // Show success animation then redirect
+    // Redirect immediately
+    try {
+      const newWindow = window.open(whatsappUrl, '_blank');
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+        window.location.href = whatsappUrl;
+      }
+    } catch (e) {
+      console.error("Redirection failed", e);
+      window.location.href = whatsappUrl;
+    }
+
+    setIsSubmitting(false);
+    setIsRedirecting(true);
+    setIsSuccess(true);
+    
+    // Auto close after delay
     setTimeout(() => {
-      setIsSubmitting(false);
-      setIsRedirecting(true);
-      
-      setTimeout(() => {
-        setIsSuccess(true);
-        // Using window.location.href is more reliable than window.open in some environments
-        // and less likely to be blocked by popup blockers when called after a delay.
-        try {
-          window.location.href = whatsappUrl;
-        } catch (e) {
-          console.error("Redirection failed", e);
-          window.open(whatsappUrl, '_blank');
-        }
-        
-        // Auto close after delay
-        setTimeout(() => {
-          onClose();
-        }, 5000);
-      }, 2500);
-    }, 1000);
+      onClose();
+    }, 3000);
   };
 
   return (

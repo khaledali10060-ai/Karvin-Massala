@@ -95,10 +95,10 @@ const ReservationSystem: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       />
       
       <motion.div 
-        initial={{ scale: 0.9, opacity: 0, y: 20 }}
+        initial={{ scale: 0.95, opacity: 0, y: 10 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.9, opacity: 0, y: 20 }}
-        className="relative w-full max-w-2xl bg-ink border border-gold/30 rounded-[2rem] overflow-hidden shadow-[0_0_100px_rgba(201,163,92,0.15)]"
+        exit={{ scale: 0.95, opacity: 0, y: 10 }}
+        className="relative w-full max-w-2xl bg-ink border border-gold/30 rounded-[2rem] overflow-hidden shadow-[0_0_100px_rgba(201,163,92,0.15)] will-change-transform"
       >
         {/* Background Effects */}
         <div className="absolute inset-0 pointer-events-none opacity-20">
@@ -117,13 +117,13 @@ const ReservationSystem: React.FC<{ onClose: () => void }> = ({ onClose }) => {
               <div className="relative">
                 <motion.div 
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                  className="w-32 h-32 border-2 border-gold/20 border-t-gold rounded-full"
+                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                  className="w-32 h-32 border-2 border-gold/20 border-t-gold rounded-full will-change-transform"
                 />
                 <motion.div 
                   animate={{ rotate: -360 }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-                  className="absolute inset-2 border-2 border-gold/10 border-b-gold rounded-full"
+                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                  className="absolute inset-2 border-2 border-gold/10 border-b-gold rounded-full will-change-transform"
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <MessageCircle size={40} className="text-gold animate-pulse" />
@@ -210,7 +210,7 @@ const ReservationSystem: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   <div className="relative group">
                     <div className="absolute -inset-2 bg-gold/20 rounded-full blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
                     <img 
-                      src="https://i.postimg.cc/3rFJyCcg/599946786-1155252650100970-534780702069780137-n.jpg" 
+                      src="https://i.postimg.cc/kGFwP47g/599946786-1155252650100970-534780702069780137-n-removebg-preview.png" 
                       alt="Logo" 
                       className="h-12 md:h-16 w-auto object-contain relative"
                       referrerPolicy="no-referrer"

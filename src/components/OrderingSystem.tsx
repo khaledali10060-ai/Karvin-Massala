@@ -323,9 +323,9 @@ const OrnamentalDivider = () => (
 const GoldFrame: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = "" }) => (
   <div className={`relative p-1 group/frame ${className}`}>
     {/* Outer subtle glow */}
-    <div className="absolute inset-0 bg-gold/5 blur-xl opacity-0 group-hover/frame:opacity-100 transition-opacity duration-700"></div>
+    <div className="absolute inset-0 bg-gold/5 blur-xl opacity-0 group-hover/frame:opacity-100 transition-opacity duration-300"></div>
     {/* Main Border */}
-    <div className="absolute inset-0 border border-gold/20 group-hover/frame:border-gold/40 transition-colors duration-700 rounded-2xl"></div>
+    <div className="absolute inset-0 border border-gold/20 group-hover/frame:border-gold/40 transition-colors duration-300 rounded-2xl"></div>
     {/* Corner Accents */}
     <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-gold rounded-tl-2xl shadow-[0_0_15px_rgba(201,163,92,0.3)]"></div>
     <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-gold rounded-tr-2xl shadow-[0_0_15px_rgba(201,163,92,0.3)]"></div>
@@ -342,42 +342,50 @@ const FireEffect = () => (
   <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-30">
     <motion.div 
       animate={{ 
-        scale: [1, 1.1, 1],
+        scale: [1, 1.05, 1],
         opacity: [0.3, 0.5, 0.3],
         y: [0, -10, 0]
       }}
-      transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-      className="absolute -bottom-20 left-0 right-0 h-64 bg-[radial-gradient(ellipse_at_bottom,_rgba(255,100,0,0.4)_0%,_transparent_70%)] blur-3xl"
+      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      className="absolute -bottom-20 left-0 right-0 h-64 bg-[radial-gradient(ellipse_at_bottom,_rgba(255,100,0,0.4)_0%,_transparent_70%)] blur-3xl will-change-transform"
     />
   </div>
 );
 
-const SpiceParticles = () => (
-  <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-    {[...Array(15)].map((_, i) => (
-      <motion.div
-        key={i}
-        initial={{ 
-          x: Math.random() * 100 + "%", 
-          y: Math.random() * 100 + "%",
-          opacity: 0,
-          scale: Math.random() * 0.5 + 0.5
-        }}
-        animate={{ 
-          y: [null, "-=100"],
-          opacity: [0, 0.4, 0],
-          x: [null, i % 2 === 0 ? "+=20" : "-=20"]
-        }}
-        transition={{ 
-          duration: Math.random() * 10 + 10, 
-          repeat: Infinity, 
-          delay: Math.random() * 10 
-        }}
-        className="absolute w-1 h-1 bg-gold/40 rounded-full blur-[1px]"
-      />
-    ))}
-  </div>
-);
+const SpiceParticles = () => {
+  const [particleCount, setParticleCount] = useState(15);
+  
+  useEffect(() => {
+    if (window.innerWidth < 768) setParticleCount(6);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+      {[...Array(particleCount)].map((_, i) => (
+        <motion.div
+          key={i}
+          initial={{ 
+            x: Math.random() * 100 + "%", 
+            y: Math.random() * 100 + "%",
+            opacity: 0,
+            scale: Math.random() * 0.5 + 0.5
+          }}
+          animate={{ 
+            y: [null, "-=100"],
+            opacity: [0, 0.4, 0],
+            x: [null, i % 2 === 0 ? "+=15" : "-=15"]
+          }}
+          transition={{ 
+            duration: Math.random() * 10 + 10, 
+            repeat: Infinity, 
+            delay: Math.random() * 10 
+          }}
+          className="absolute w-1 h-1 bg-gold/40 rounded-full blur-[1px] will-change-transform"
+        />
+      ))}
+    </div>
+  );
+};
 
 const OrderingSystem: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -512,7 +520,7 @@ ${orderDetails}
               </button>
             )}
             <img 
-              src="https://i.postimg.cc/3rFJyCcg/599946786-1155252650100970-534780702069780137-n.jpg" 
+              src="https://i.postimg.cc/kGFwP47g/599946786-1155252650100970-534780702069780137-n-removebg-preview.png" 
               alt="Logo" 
               className="h-12 md:h-16 w-auto object-contain"
               referrerPolicy="no-referrer"

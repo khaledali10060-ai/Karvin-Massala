@@ -48,73 +48,89 @@ const FireEffect = () => (
   <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-20">
     <motion.div 
       animate={{ 
-        scale: [1, 1.1, 1],
+        scale: [1, 1.05, 1],
         opacity: [0.2, 0.4, 0.2],
-        y: [0, -20, 0]
+        y: [0, -10, 0]
       }}
-      transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-      className="absolute -bottom-40 left-0 right-0 h-96 bg-[radial-gradient(ellipse_at_bottom,_rgba(255,80,0,0.3)_0%,_transparent_70%)] blur-[100px]"
+      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      className="absolute -bottom-40 left-0 right-0 h-96 bg-[radial-gradient(ellipse_at_bottom,_rgba(255,80,0,0.3)_0%,_transparent_70%)] blur-[100px] will-change-transform"
     />
   </div>
 );
 
-const SpiceParticles = () => (
-  <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-    {[...Array(20)].map((_, i) => (
-      <motion.div
-        key={i}
-        initial={{ 
-          x: Math.random() * 100 + "%", 
-          y: Math.random() * 100 + "%",
-          opacity: 0,
-          scale: Math.random() * 0.5 + 0.5
-        }}
-        animate={{ 
-          y: [null, "-=150"],
-          opacity: [0, 0.3, 0],
-          x: [null, i % 2 === 0 ? "+=30" : "-=30"]
-        }}
-        transition={{ 
-          duration: Math.random() * 15 + 15, 
-          repeat: Infinity, 
-          delay: Math.random() * 15 
-        }}
-        className="absolute w-1 h-1 bg-gold/30 rounded-full blur-[1px]"
-      />
-    ))}
-  </div>
-);
+const SpiceParticles = () => {
+  const [particleCount, setParticleCount] = useState(20);
+  
+  useEffect(() => {
+    if (window.innerWidth < 768) setParticleCount(8);
+  }, []);
 
-const SmokeEffect = () => (
-  <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-30">
-    {[...Array(5)].map((_, i) => (
-      <motion.div
-        key={i}
-        initial={{ 
-          x: (i * 25) + "%", 
-          y: "110%",
-          opacity: 0,
-          scale: 1,
-          rotate: 0
-        }}
-        animate={{ 
-          y: "-20%",
-          opacity: [0, 0.4, 0],
-          scale: [1, 2, 3],
-          rotate: [0, 45, 90],
-          x: [(i * 25) + "%", (i * 25 + (i % 2 === 0 ? 10 : -10)) + "%"]
-        }}
-        transition={{ 
-          duration: 20 + Math.random() * 10, 
-          repeat: Infinity, 
-          delay: i * 4,
-          ease: "linear"
-        }}
-        className="absolute w-64 h-64 bg-white/5 rounded-full blur-[80px]"
-      />
-    ))}
-  </div>
-);
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+      {[...Array(particleCount)].map((_, i) => (
+        <motion.div
+          key={i}
+          initial={{ 
+            x: Math.random() * 100 + "%", 
+            y: Math.random() * 100 + "%",
+            opacity: 0,
+            scale: Math.random() * 0.5 + 0.5
+          }}
+          animate={{ 
+            y: [null, "-=100"],
+            opacity: [0, 0.3, 0],
+            x: [null, i % 2 === 0 ? "+=15" : "-=15"]
+          }}
+          transition={{ 
+            duration: Math.random() * 10 + 10, 
+            repeat: Infinity, 
+            delay: Math.random() * 10 
+          }}
+          className="absolute w-1 h-1 bg-gold/30 rounded-full blur-[1px] will-change-transform"
+        />
+      ))}
+    </div>
+  );
+};
+
+const SmokeEffect = () => {
+  const [smokeCount, setSmokeCount] = useState(5);
+  
+  useEffect(() => {
+    if (window.innerWidth < 768) setSmokeCount(2);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-30">
+      {[...Array(smokeCount)].map((_, i) => (
+        <motion.div
+          key={i}
+          initial={{ 
+            x: (i * 25) + "%", 
+            y: "110%",
+            opacity: 0,
+            scale: 1,
+            rotate: 0
+          }}
+          animate={{ 
+            y: "-20%",
+            opacity: [0, 0.4, 0],
+            scale: [1, 1.5, 2],
+            rotate: [0, 45, 90],
+            x: [(i * 25) + "%", (i * 25 + (i % 2 === 0 ? 5 : -5)) + "%"]
+          }}
+          transition={{ 
+            duration: 15 + Math.random() * 5, 
+            repeat: Infinity, 
+            delay: i * 3,
+            ease: "linear"
+          }}
+          className="absolute w-64 h-64 bg-white/5 rounded-full blur-[80px] will-change-transform"
+        />
+      ))}
+    </div>
+  );
+};
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -124,8 +140,14 @@ export default function App() {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   
   const { scrollYProgress } = useScroll();
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
-  const backgroundYFast = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], isMobile ? ['0%', '0%'] : ['0%', '30%']);
+  const backgroundYFast = useTransform(scrollYProgress, [0, 1], isMobile ? ['0%', '0%'] : ['0%', '50%']);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -143,8 +165,8 @@ export default function App() {
   }, []);
 
   const fadeUp = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }
+    hidden: { opacity: 0, y: 15 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } }
   };
 
   const staggerContainer = {
@@ -175,7 +197,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <img 
-              src="https://i.postimg.cc/3rFJyCcg/599946786-1155252650100970-534780702069780137-n.jpg" 
+              src="https://i.postimg.cc/kGFwP47g/599946786-1155252650100970-534780702069780137-n-removebg-preview.png" 
               alt="Karvin Massala Logo" 
               className="h-12 md:h-16 w-auto object-contain"
               referrerPolicy="no-referrer"
@@ -1011,7 +1033,7 @@ export default function App() {
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center gap-4 mb-6">
                 <img 
-                  src="https://i.postimg.cc/3rFJyCcg/599946786-1155252650100970-534780702069780137-n.jpg" 
+                  src="https://i.postimg.cc/kGFwP47g/599946786-1155252650100970-534780702069780137-n-removebg-preview.png" 
                   alt="Karvin Massala Logo" 
                   className="h-16 md:h-20 w-auto object-contain"
                   referrerPolicy="no-referrer"
